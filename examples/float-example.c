@@ -3,7 +3,6 @@
 int main()
 {
     cvec(float) vec;
-    cvec_init(&vec);
 
     printf("Initial state: ");
     if (vec.size == 0)
@@ -11,10 +10,10 @@ int main()
         printf("empty\n");
     }
 
-    cvec_push(&vec, 53.12f);
-    cvec_push(&vec, 23.1f);
-    cvec_push(&vec, 93325.143f);
-    cvec_push(&vec, 6.954f);
+    cvec_push(&vec, 53.13267);
+    cvec_push(&vec, 23.3);
+    cvec_push(&vec, 93325.11);
+    cvec_push(&vec, 6.996);
 
     printf("After pushing values: ");
     for (size_t i = 0; i < vec.size; ++i)
@@ -37,6 +36,13 @@ int main()
             printf("%f\n", vec.data[i]);
     }
 
-    cvec_free(&vec);
+    cvec_clear(&vec);
+
+    printf("After clearing: ");
+    if (vec.size == 0)
+    {
+        printf("empty\n");
+    }
+
     return 0;
 }

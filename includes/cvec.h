@@ -16,33 +16,26 @@
         size_t capacity; \
     }
 
-#define cvec_init(v)                                            \
-    do                                                          \
-    {                                                           \
-        (v)->data = NULL;                                       \
-        (v)->size = 0;                                          \
-        (v)->capacity = 0;                                      \
-        cvec__init((void **)&(v)->data, sizeof(*(v)->data), 1); \
-    } while (0)
-
 #define cvec_push(v, val)                                                          \
     do                                                                             \
     {                                                                              \
+        if ((v)->data == NULL)                                                     \
+            cvec__init((void **)&(v)->data, sizeof(*(v)->data), 1);                \
         if ((v)->size >= (v)->capacity)                                            \
             cvec__expand((void **)&(v)->data, &(v)->capacity, sizeof(*(v)->data)); \
         (v)->data[(v)->size++] = (val);                                            \
     } while (0)
 
-#define cvec_pop(v)                                        \
-    do                                                     \
-    {                                                      \
-        if ((v)->size > 0)                                 \
-            --(v)->size;                                   \
-        else                                               \
-            fprintf(stderr, "cvec_pop(): empty vector\n"); \
+#define cvec_pop(v)                          \
+    do                                       \
+    {                                        \
+        if ((v)->size > 0)                   \
+            --(v)->size;                     \
+        else                                 \
+            cvec__free((void **)&(v)->data); \
     } while (0)
 
-#define cvec_free(v)       \
+#define cvec_clear(v)      \
     do                     \
     {                      \
         free((v)->data);   \
@@ -81,6 +74,12 @@ static int cvec__expand(void **data, size_t *cap, size_t elem_size)
     *cap = new_cap;
 
     return 0;
+}
+
+static void cvec__free(void **data)
+{
+    free(data);
+    data = NULL;
 }
 
 #undef CVEC_GROWTH_FACTOR

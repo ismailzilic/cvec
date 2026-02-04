@@ -3,7 +3,6 @@
 int main()
 {
     cvec(size_t) vec;
-    cvec_init(&vec);
 
     printf("Initial state: ");
     if (vec.size == 0)
@@ -37,6 +36,13 @@ int main()
             printf("%d\n", vec.data[i]);
     }
 
-    cvec_free(&vec);
+    cvec_clear(&vec);
+
+    printf("After clearing: ");
+    if (vec.size == 0)
+    {
+        printf("empty\n");
+    }
+
     return 0;
 }
